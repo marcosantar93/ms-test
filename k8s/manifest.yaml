@@ -1,0 +1,88 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ms-test
+spec:
+  ports:
+    - name: http
+      port: 3000
+  selector:
+    component: ms-test
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-test
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      component: ms-test
+  template:
+    metadata:
+      labels:
+        component: ms-test
+    spec:
+      containers:
+        - name: ms-test
+          image: marcosantarcangelo/ms-test:v0
+          ports:
+            - containerPort: 3000 # This is very important
+          env:
+            - name: NATS_URL
+              value: nats://nats-service:4222
+            - name: NATS_USER
+              value: user
+            - name: NATS_PASS
+              value: password
+            - name: NODE_ENV
+              value: production
+            - name: HEALTHCHECK_INTERVAL
+              value: "5000"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64M
+            limits:
+              cpu: 100m
+              memory: 128M
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: nats
+  template:
+    metadata: 
+      labels:
+        component: nats
+    spec:
+      containers:
+        - name: nats
+          image: nats
+          ports:
+            - containerPort: 4222
+
+---
+
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nats-service
+spec:
+  type: ClusterIP
+  selector:
+    component: nats
+  ports:
+    - port: 4222
+      targetPort: 4222
