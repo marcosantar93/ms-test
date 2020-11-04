@@ -28,7 +28,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(...globalInterceptors);
 
-  app.listen(() => winstonLogger.log('Microservice ms-iban running'));
+  app.listen(() => winstonLogger.log('Microservice ms-test running'));
 
 }
 bootstrap();
