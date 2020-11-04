@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: ms-test
-          image: marcosantarcangelo/ms-test:v0
+          image: marcosantarcangelo/ms-test:v1
           ports:
             - containerPort: 3000 # This is very important
           env:
