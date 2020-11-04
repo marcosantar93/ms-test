@@ -8,7 +8,7 @@ import { WinstonModule } from 'nest-winston';
 import { LoggerConfig } from './factory/winstonConfig';
 import { MetricsModule } from './metrics/metrics.module';
 import { MessageModule } from './message/message.module';
-const logger: LoggerConfig = new LoggerConfig();    
+const logger: LoggerConfig = LoggerConfig.getInstance();    
 
 @Module({})
 export class AppModule {

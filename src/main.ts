@@ -9,7 +9,7 @@ import { WinstonModule } from 'nest-winston';
 import { LoggerConfig } from './factory/winstonConfig';
 
 async function bootstrap() {
-  const logger: LoggerConfig = new LoggerConfig();
+  const logger: LoggerConfig = LoggerConfig.getInstance();
   const winstonLogger = WinstonModule.createLogger(logger.console());
 
   const app = await NestFactory.create(
